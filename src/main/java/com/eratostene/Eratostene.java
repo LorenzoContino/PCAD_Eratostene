@@ -5,12 +5,13 @@ import java.util.TreeMap;
 
 public final class Eratostene {
 
-    private static Map<String, Topic> topicMap= new TreeMap<>();
+    private static Map<String, Topic> topicMap;
+    
+    static{
+        topicMap = new TreeMap<>();
+    }
     
         
-    
-
- 
     protected static synchronized Topic SubscribeProd(String topicName) {
 
         if (topicMap.containsKey(topicName)) {
@@ -68,6 +69,10 @@ public final class Eratostene {
         topicMap.put(topic_name, new Topic(topic_name));
         return topicMap.get(topic_name);
 
+    }
+
+    public static Integer topicCount(){
+        return topicMap.size();
     }
 
 }

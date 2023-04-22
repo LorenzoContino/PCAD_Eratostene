@@ -20,7 +20,7 @@ public abstract class Subscriber {
         this.myConsumer = null;
     }
 
-    public void UnSubscribeProdS(String producer_name) {
+    public void UnSubscribeProd(String producer_name) {
         Eratostene.UnSubscribeProd(producer_name);
         this.myProducer = null;
     }
@@ -39,4 +39,11 @@ public abstract class Subscriber {
 
     }
 
+    public boolean isProducer(){
+        return myProducer!=null;
+    }
+
+    public boolean isConsumer(){
+        return myConsumer!=null;
+    }
 }
