@@ -9,7 +9,7 @@ public class Topic {
     private boolean hasProducer = false;
     private boolean hasConsumer= false;
 
-    public Topic(String name){
+    protected Topic(String name){
         topic_data = new ConcurrentLinkedQueue<Integer>();
         this.topic_name= name;
         
@@ -37,6 +37,9 @@ public class Topic {
         return topic_name;
     }
 
+    public  ConcurrentLinkedQueue<Integer> getTopicData(){
+        return this.topic_data;
+    }
   
 
     

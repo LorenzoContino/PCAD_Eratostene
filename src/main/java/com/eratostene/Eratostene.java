@@ -1,37 +1,73 @@
 package com.eratostene;
 
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public final class Eratostene {
 
-   
-    private Map<String, Topic> topicMap;
-
-    public Eratostene() {
-
-    }
-
-    protected Topic SubscribeProd(String topicName) {
-
-        return null;
-
-    }
-    protected void UnSubscribeProd(String topicName) {
-            
-    }
-
-    protected Topic SubscribeCOns(String topicName) {
-
-        return null;
-
-    }
-
-    private void generateTopic(String topic_name){
-
-        topicMap.put(topic_name, new Topic(topic_name));
+    private static Map<String, Topic> topicMap= new TreeMap<>();
+    
         
     
-    
+
+ 
+    protected static synchronized Topic SubscribeProd(String topicName) {
+
+        if (topicMap.containsKey(topicName)) {
+            Topic topic = topicMap.get(topicName);
+            if (!topic.getHasProducer()) {
+                topic.setHasProducer(true);
+                return topic;
+            }
+            throw new IllegalArgumentException("Topic ha già produttore");
+        } else {
+
+            Topic newTopic = generateTopic(topicName);
+            newTopic.setHasProducer(true);
+            return newTopic;
+
+        }
+
     }
+
+    protected static synchronized Topic SubscribeCons(String topicName) {
+
+        if (topicMap.containsKey(topicName)) {
+            Topic topic = topicMap.get(topicName);
+            if (!topic.getHasConsumer()) {
+                topic.setHasConsumer(true);
+                return topic;
+            }
+            throw new IllegalArgumentException("Topic ha già consumatore");
+        } else {
+
+            Topic newTopic = generateTopic(topicName);
+            newTopic.setHasConsumer(true);
+            return newTopic;
+
+        }
+
+    }
+
+    protected static synchronized void UnSubscribeProd(String topicName) {
+        if (topicMap.containsKey(topicName)) {
+            Topic topic = topicMap.get(topicName);
+            topic.setHasProducer(false);
+        }
+
+    }
+
+    protected static synchronized void UnSubscribeCons(String topicName) {
+        if (topicMap.containsKey(topicName)) {
+            Topic topic = topicMap.get(topicName);
+            topic.setHasConsumer(false);
+        }
+    }
+
+    private static synchronized Topic generateTopic(String topic_name) {
+        topicMap.put(topic_name, new Topic(topic_name));
+        return topicMap.get(topic_name);
+
+    }
+
 }
