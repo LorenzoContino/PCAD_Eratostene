@@ -33,7 +33,9 @@ public abstract class Subscriber {
 
     public Integer consume() {
         if (myConsumer != null) {
-            return myConsumer.getTopicData().poll();
+            if (myConsumer.hasData()){
+                return myConsumer.getTopicData().poll();
+            }
         }
         return null; 
 

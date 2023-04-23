@@ -33,6 +33,10 @@ public class Topic {
         return hasConsumer;
     }
 
+    public boolean hasData() {
+        return topic_data.size()>0;
+    }
+
     public String getTopic_name() {
         return topic_name;
     }
