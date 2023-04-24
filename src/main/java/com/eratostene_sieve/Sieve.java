@@ -1,5 +1,6 @@
 package com.eratostene_sieve;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,21 +11,34 @@ public class Sieve extends Subscriber{
     
     private static final AtomicInteger id = new AtomicInteger(0);
     private final Integer my_id;
-    private Topic topicStart;
-    private Topic topicEnd;
 
     public Sieve(){
         my_id = id.incrementAndGet();
         SubscribeProd("start-"+my_id.toString());
-        SubscribeCons("end-"+my_id.toString());
     }    
 
-    public ArrayList<Integer> doSieve(ArrayList<Integer> list_to_sieve){
-        // Facciamo i controlli sulla lista
-        list_to_sieve.add(-1000);
-        for (var number: list_to_sieve) {
-            produce(number);
+    public List<Integer> doSieve(Integer number){
+        var number_list = new ArrayList<Integer>();
+        for (var i=2; i<number; i++){
+            number_list.add(i);
         }
+        number_list.add(-1000);
+        Threadatostene.startThread(getMyProducer().getTopic_name());
+        for (var num : number_list) {
+            produce(num);
+        }
+        try {
+            synchronized(Threadatostene.sync_obj){
+                Threadatostene.sync_obj.wait();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Threadatostene.stopThreads();
+        }
+        Threadatostene.stopThreads();
+        return Threadatostene.getResult();
     }
 
 }
+
+

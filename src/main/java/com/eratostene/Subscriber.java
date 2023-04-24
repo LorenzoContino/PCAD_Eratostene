@@ -5,6 +5,14 @@ public abstract class Subscriber {
     private Topic myProducer;
     private Topic myConsumer;
 
+    public Topic getMyProducer() {
+        return myProducer;
+    }
+
+    public Topic getMyConsumer() {
+        return myConsumer;
+    }
+
     public void SubscribeProd(String producer_name) {
         this.myProducer = Eratostene.SubscribeProd(producer_name);
 

@@ -12,9 +12,6 @@ public class Topic {
     protected Topic(String name){
         topic_data = new ConcurrentLinkedQueue<Integer>();
         this.topic_name= name;
-        
-
-
     }
 
     public void setHasProducer(boolean hasProducer) {
