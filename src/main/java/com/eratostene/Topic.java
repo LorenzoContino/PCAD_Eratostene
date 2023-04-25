@@ -41,7 +41,5 @@ public class Topic {
     public  ConcurrentLinkedQueue<Integer> getTopicData(){
         return this.topic_data;
     }
-  
-
-    
+      
 }

@@ -6,8 +6,8 @@ import com.eratostene.*;
 
 public class SieveWorker extends Subscriber implements Runnable {
 
-    protected AtomicBoolean running = new AtomicBoolean(false);
-    protected Integer my_denominator = null;
+    private AtomicBoolean running = new AtomicBoolean(false);
+    private Integer my_denominator = null;
     private String topicEndpointName;
     private String topicProduceName;
 

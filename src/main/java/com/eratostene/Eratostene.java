@@ -47,7 +47,6 @@ public final class Eratostene {
             return newTopic;
 
         }
-
     }
 
     protected static synchronized void UnSubscribeProd(String topicName) {
@@ -55,7 +54,6 @@ public final class Eratostene {
             Topic topic = topicMap.get(topicName);
             topic.setHasProducer(false);
         }
-
     }
 
     protected static synchronized void UnSubscribeCons(String topicName) {

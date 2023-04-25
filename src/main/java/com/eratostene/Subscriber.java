@@ -15,12 +15,10 @@ public abstract class Subscriber {
 
     public void SubscribeProd(String producer_name) {
         this.myProducer = Eratostene.SubscribeProd(producer_name);
-
     }
 
     public void SubscribeCons(String consumer_name) {
         this.myConsumer = Eratostene.SubscribeCons(consumer_name);
-
     }
 
     public void UnSubscribeCons(String consumer_name) {
@@ -46,7 +44,6 @@ public abstract class Subscriber {
             }
         }
         return null; 
-
     }
 
     public boolean isProducer(){
