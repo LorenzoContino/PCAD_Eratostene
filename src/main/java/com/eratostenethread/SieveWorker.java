@@ -8,9 +8,12 @@ public class SieveWorker extends Subscriber implements Runnable {
 
     protected AtomicBoolean running = new AtomicBoolean(false);
     protected Integer my_denominator = null;
+    private String topicEndpointName;
+    private String topicProduceName;
 
-    public SieveWorker(String topicName) {
+    public SieveWorker(String topicName, String topicEndpointName) {
         this.SubscribeCons(topicName);
+        this.topicEndpointName = topicEndpointName;
     }
 
     private boolean doAritmetics(Integer number) {
@@ -28,6 +31,7 @@ public class SieveWorker extends Subscriber implements Runnable {
                         synchronized(Threadatostene.sync_obj){
                             Threadatostene.sync_obj.notifyAll();
                         }
+                        running.set(false);
                         continue;
                     }
                     my_denominator = number;
@@ -39,11 +43,26 @@ public class SieveWorker extends Subscriber implements Runnable {
                     }
                 }
                 if (!isProducer()) {
-                    String topic_name = number.toString();
-                    Threadatostene.startThread(topic_name);
-                    SubscribeProd(topic_name);
+                    topicProduceName = number.toString();
+                    Threadatostene.startThread(topicProduceName, topicEndpointName);
+                    SubscribeProd(topicProduceName);
                 }
                 produce(number);
+                if(number == -1000){
+                    UnSubscribeProd(topicProduceName);
+                    for(;;){
+                        try{
+                            SubscribeProd(topicEndpointName);
+                            break;
+                        } catch (Exception e){
+                            // Se qualcuno sta gia' producendo sul topic finale (cosa improbabile ma possibile)
+                            // rimango in buisy waiting finche quello non ha finito
+                        }
+                    }
+                    produce(my_denominator);
+                    UnSubscribeProd(topicEndpointName);
+                    running.set(false);
+                }
             } else { // Se la pipe e' vuota aspetto un attimo per non fondere la CPU
                 try {
                     Thread.sleep(2);

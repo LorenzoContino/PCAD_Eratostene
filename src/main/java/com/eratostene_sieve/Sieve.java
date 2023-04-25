@@ -15,7 +15,16 @@ public class Sieve extends Subscriber{
     public Sieve(){
         my_id = id.incrementAndGet();
         SubscribeProd("start-"+my_id.toString());
-    }    
+        SubscribeCons("end-"+my_id.toString());
+    }
+
+    private List<Integer> getResult(){
+        var returnList = new ArrayList<Integer>();
+        for(Integer i = consume(); i!=null; i=consume()){
+            returnList.add(i);
+        }
+        return returnList;
+    }
 
     public List<Integer> doSieve(Integer number){
         var number_list = new ArrayList<Integer>();
@@ -23,7 +32,7 @@ public class Sieve extends Subscriber{
             number_list.add(i);
         }
         number_list.add(-1000);
-        Threadatostene.startThread(getMyProducer().getTopic_name());
+        Threadatostene.startThread(getMyProducer().getTopic_name(), getMyConsumer().getTopic_name());
         for (var num : number_list) {
             produce(num);
         }
@@ -34,9 +43,10 @@ public class Sieve extends Subscriber{
         } catch (Exception e) {
             System.out.println(e.getMessage());
             Threadatostene.stopThreads();
+            return null;
         }
         Threadatostene.stopThreads();
-        return Threadatostene.getResult();
+        return getResult(); // Avendo joinato ogni thread sono sicuro che nel topic di arrivo sono presenti tutti i numeri 
     }
 
 }

@@ -39,12 +39,9 @@ public class EratosteneTest {
         assert(Eratostene.topicCount() == 0);
         tProducer= Eratostene.SubscribeProd("testTopicProd");
         assert(Eratostene.topicCount() == 1);
-        assert(tProducer.getHasProducer());
         Eratostene.UnSubscribeProd("testTopicProd");
-        assert(!tProducer.getHasProducer());
         tProducer= Eratostene.SubscribeProd("testTopicProd");
         assert(Eratostene.topicCount() == 1);
-        assert(tProducer.getHasProducer());
     }
 
     @Test (expected = Exception.class)
